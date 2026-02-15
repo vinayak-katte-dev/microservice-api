@@ -116,6 +116,30 @@ describe('API Endpoints', () => {
     });
   });
 
+  describe('GET /api/v1/status', () => {
+    it('should return 401 without API key', async () => {
+      const response = await request(app).get('/api/v1/status');
+
+      expect(response.status).toBe(401);
+    });
+
+    it('should return system status with valid API key', async () => {
+      const response = await request(app)
+        .get('/api/v1/status')
+        .set('X-API-Key', 'dev-api-key-12345');
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('success', true);
+      expect(response.body).toHaveProperty('status', 'operational');
+      expect(response.body).toHaveProperty('timestamp');
+      expect(response.body).toHaveProperty('system');
+      expect(response.body.system).toHaveProperty('nodeVersion');
+      expect(response.body.system).toHaveProperty('platform');
+      expect(response.body.system).toHaveProperty('uptime');
+      expect(response.body.system).toHaveProperty('memory');
+    });
+  });
+
   describe('GET /nonexistent', () => {
     it('should return 404 for unknown routes', async () => {
       const response = await request(app).get('/nonexistent');

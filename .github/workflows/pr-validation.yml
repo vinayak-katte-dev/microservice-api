@@ -36,7 +36,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t devops-test-api:pr-${{ github.event.pull_request.number }} .
+          docker build -f src/Dockerfile -t devops-test-api:pr-${{ github.event.pull_request.number }} .
+
 
       - name: Test Docker image
         run: |
