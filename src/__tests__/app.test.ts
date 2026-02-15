@@ -33,8 +33,17 @@ describe('API Endpoints', () => {
   });
 
   describe('GET /api/v1/info', () => {
-    it('should return API information', async () => {
+    it('should return 401 without API key', async () => {
       const response = await request(app).get('/api/v1/info');
+
+      expect(response.status).toBe(401);
+      expect(response.body).toHaveProperty('message');
+    });
+
+    it('should return API information with valid API key', async () => {
+      const response = await request(app)
+        .get('/api/v1/info')
+        .set('X-API-Key', 'dev-api-key-12345');
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('name');
@@ -45,8 +54,16 @@ describe('API Endpoints', () => {
   });
 
   describe('GET /api/v1/users', () => {
-    it('should return list of users', async () => {
+    it('should return 401 without API key', async () => {
       const response = await request(app).get('/api/v1/users');
+
+      expect(response.status).toBe(401);
+    });
+
+    it('should return list of users with valid API key', async () => {
+      const response = await request(app)
+        .get('/api/v1/users')
+        .set('X-API-Key', 'dev-api-key-12345');
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('success', true);
@@ -56,13 +73,27 @@ describe('API Endpoints', () => {
   });
 
   describe('POST /api/v1/users', () => {
-    it('should create a new user', async () => {
+    it('should return 401 without API key', async () => {
       const newUser = {
         name: 'Test User',
         email: 'test@example.com',
       };
 
       const response = await request(app).post('/api/v1/users').send(newUser);
+
+      expect(response.status).toBe(401);
+    });
+
+    it('should create a new user with valid API key', async () => {
+      const newUser = {
+        name: 'Test User',
+        email: 'test@example.com',
+      };
+
+      const response = await request(app)
+        .post('/api/v1/users')
+        .set('X-API-Key', 'dev-api-key-12345')
+        .send(newUser);
 
       expect(response.status).toBe(201);
       expect(response.body).toHaveProperty('success', true);
@@ -75,7 +106,10 @@ describe('API Endpoints', () => {
         email: 'test@example.com',
       };
 
-      const response = await request(app).post('/api/v1/users').send(invalidUser);
+      const response = await request(app)
+        .post('/api/v1/users')
+        .set('X-API-Key', 'dev-api-key-12345')
+        .send(invalidUser);
 
       expect(response.status).toBe(400);
       expect(response.body).toHaveProperty('success', false);
