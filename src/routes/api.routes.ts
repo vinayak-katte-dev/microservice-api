@@ -20,6 +20,7 @@ router.get('/info', (_req: Request, res: Response) => {
       'GET /health - Public health check',
       'GET /ready - Public readiness check',
       'GET /api/v1/info - API information (requires API key)',
+      'GET /api/v1/status - System status (requires API key)',
       'GET /api/v1/users - Get all users (requires API key)',
       'POST /api/v1/users - Create user (requires API key)',
     ],
@@ -75,6 +76,25 @@ router.post('/users', (req: Request, res: Response) => {
   return res.status(201).json({
     success: true,
     data: newUser,
+  });
+});
+
+// New status endpoint
+router.get('/status', (_req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    status: 'operational',
+    timestamp: new Date().toISOString(),
+    system: {
+      nodeVersion: process.version,
+      platform: process.platform,
+      uptime: process.uptime(),
+      memory: {
+        total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
+        used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+        unit: 'MB',
+      },
+    },
   });
 });
 
