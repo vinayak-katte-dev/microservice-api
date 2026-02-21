@@ -2,7 +2,9 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import swaggerUi from 'swagger-ui-express';
 import { config } from './config';
+import { swaggerSpec } from './config/swagger';
 import { errorHandler } from './middleware/errorHandler';
 import { requestLogger } from './middleware/requestLogger';
 import { apiKeyAuth } from './middleware/apiKeyAuth';
@@ -26,6 +28,18 @@ app.use(express.urlencoded({ extended: true }));
 // Request logging
 app.use(requestLogger);
 
+// Swagger UI - public, no auth needed
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Microservice API Documentation',
+}));
+
+// Swagger spec as JSON
+app.get('/api-docs.json', (_req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
 // Public routes (no authentication required)
 app.use('/', healthRoutes);
 
@@ -37,7 +51,7 @@ app.get('/', (_req, res) => {
   res.status(200).json({
     message: 'Welcome to DevOps Test API',
     version: '1.0.0',
-    documentation: '/api/v1/info',
+    documentation: '/api-docs',
   });
 });
 
