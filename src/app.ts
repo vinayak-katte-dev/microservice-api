@@ -13,7 +13,8 @@ import apiRoutes from './routes/api.routes';
 
 const app: Application = express();
 
-// Security middleware
+// Security middleware - disable CSP for Swagger UI route
+app.use('/api-docs', helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(helmet());
 app.use(cors({ origin: config.cors.origins }));
 
