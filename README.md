@@ -39,7 +39,7 @@ Try it out:
 curl http://52.66.205.92:3000/health
 
 # Get users (needs API key)
-curl -H "X-API-Key: your-api-key" http://52.66.205.92:3000/api/v1/users
+curl -H "X-API-Key: VKMicro$er01BTs127df" http://52.66.205.92:3000/api/v1/users
 ```
 
 ## Tech Stack
@@ -188,7 +188,15 @@ Check the logs:
 docker logs -f microservice-api
 ```
 
-## API Documentation
+## API Documentation — Swagger UI
+
+The API has interactive documentation built in with Swagger UI. You can test all endpoints directly from your browser — no Postman or curl needed!
+
+- **Local:** http://localhost:3000/api-docs
+- **Production:** http://52.66.205.92:3000/api-docs
+- **OpenAPI JSON:** http://localhost:3000/api-docs.json
+
+Just open the link, enter your API key using the "Authorize" button at the top, and you can try out any endpoint.
 
 ### Authentication
 
