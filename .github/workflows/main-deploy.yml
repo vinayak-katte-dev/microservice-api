@@ -9,7 +9,7 @@ env:
   AWS_REGION: ap-south-1
   ECR_REPOSITORY: microservice-api
   ECS_CLUSTER: microservice-cluster
-  ECS_SERVICE: microservice-api-service
+  ECS_SERVICE: microservice-api-task-service-ormwij3g
   CONTAINER_NAME: microservice-api
 
 jobs:
