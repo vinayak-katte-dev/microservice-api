@@ -27,19 +27,16 @@ RESTful API microservice with full CRUD operations for user data. I focused on m
 
 ### Live Production URL
 
-The API is deployed and running on AWS ECS:
+The API is deployed on AWS ECS Fargate. Since Fargate assigns a new public IP on each deployment, check the current IP from the ECS console:
 
-```
-http://52.66.205.92:3000
-```
+**ECS Console → Clusters → microservice-cluster → Tasks → Click task → Public IP**
 
-Try it out:
 ```bash
-# Health check
-curl http://52.66.205.92:3000/health
+# Once you have the IP, test it:
+curl http://<PUBLIC_IP>:3000/health
 
-# Get users (needs API key)
-curl -H "X-API-Key: VKMicro$er01BTs127df" http://52.66.205.92:3000/api/v1/users
+# Swagger UI documentation:
+# http://<PUBLIC_IP>:3000/api-docs
 ```
 
 ## Tech Stack
